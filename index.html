@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#fff6f7" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <title>Pra Ana</title>
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <div id="app" class="app">
+      <div class="screen password-screen" id="password-screen">
+        <div class="page-shell">
+          <header class="page-header">
+            <p class="eyebrow">Antes de entrar, prova que é você.</p>
+            <h1>Um lugar só nosso</h1>
+          </header>
+
+          <form id="password-form" class="password-form" aria-label="Tela de entrada">
+            <label for="password-input">Senha simbólica</label>
+            <input id="password-input" name="password" type="text" autocomplete="off" inputmode="text" placeholder="14/06" required />
+            <button type="submit">Entrar</button>
+            <p id="password-message" class="hint">Digite a senha que é só nossa.</p>
+          </form>
+        </div>
+      </div>
+
+      <main class="screen app-screen hidden" id="app-screen" aria-live="polite">
+        <div class="page-shell">
+          <section class="hero" id="hero">
+            <div class="hero-card">
+              <p class="eyebrow">Pra Ana</p>
+              <h1 id="hero-title"></h1>
+              <p id="hero-text"></p>
+              <div class="hero-actions">
+                <button id="hero-start">Entrar no nosso cantinho</button>
+                <button id="music-toggle" class="secondary" type="button">Tocar música</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="section intro" id="intro">
+            <div class="section-card">
+              <h2 id="intro-title"></h2>
+              <p id="intro-text"></p>
+            </div>
+          </section>
+
+          <section class="section timeline" id="timeline-section">
+            <div class="section-header">
+              <h2>Linha do tempo</h2>
+            </div>
+            <div id="timeline-list" class="timeline-list"></div>
+          </section>
+
+          <section class="section gallery" id="gallery-section">
+            <div class="section-header">
+              <h2>Galeria</h2>
+            </div>
+            <div id="gallery-list" class="gallery-list"></div>
+          </section>
+
+          <section class="section coupons" id="coupons-section">
+            <div class="section-header">
+              <h2>Cupons</h2>
+            </div>
+            <div id="coupon-list" class="coupon-list"></div>
+          </section>
+
+          <section class="section letter" id="letter-section">
+            <div class="section-card letter-card">
+              <h2>Carta final</h2>
+              <pre id="final-letter"></pre>
+            </div>
+          </section>
+
+          <section class="section final" id="final-section">
+            <div class="section-card final-card">
+              <button id="final-button">Clique aqui se você me ama</button>
+              <p id="final-response" class="final-response"></p>
+              <div id="heart-layer" class="heart-layer" aria-hidden="true"></div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
