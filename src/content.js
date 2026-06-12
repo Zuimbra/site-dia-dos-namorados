@@ -3,7 +3,7 @@ export const content = {
   appTitle: "Pra Ana",
   passwordStorageKey: "pra-ana-unlocked",
   couponsStorageKey: "pra-ana-coupons",
-  acceptedPasswords: ["1406", "14/06", "14-06", "amor"],
+  acceptedPasswords: ["1904", "19/04", "19-04", "amor"],
 
   hero: {
     title: "Feliz Dia dos Namorados, Mo ❤️",
