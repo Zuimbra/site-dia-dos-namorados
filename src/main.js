@@ -11,11 +11,9 @@ const heroStart = document.getElementById('hero-start');
 const musicToggle = document.getElementById('music-toggle');
 const introTitle = document.getElementById('intro-title');
 const introText = document.getElementById('intro-text');
-const timelineList = document.getElementById('timeline-list');
 const photoCarouselsTitle = document.getElementById('photo-carousels-title');
 const photoCarouselsText = document.getElementById('photo-carousels-text');
 const photoCarouselsList = document.getElementById('photo-carousels-list');
-const galleryList = document.getElementById('gallery-list');
 const couponList = document.getElementById('coupon-list');
 const finalLetter = document.getElementById('final-letter');
 const finalButton = document.getElementById('final-button');
@@ -96,49 +94,6 @@ const renderHero = () => {
 const renderIntro = () => {
   introTitle.textContent = content.intro.title;
   introText.textContent = content.intro.text;
-};
-
-const renderTimeline = () => {
-  timelineList.innerHTML = '';
-  content.timeline.forEach((item) => {
-    const article = document.createElement('article');
-    article.className = 'timeline-item';
-    article.innerHTML = `
-      <h3>${item.title}</h3>
-      ${item.date ? `<time>${item.date}</time>` : ''}
-      <p>${item.text}</p>
-    `;
-
-    if (item.image) {
-      const img = document.createElement('img');
-      img.src = item.image;
-      img.alt = item.title;
-      img.loading = 'lazy';
-      img.addEventListener('error', handleImageError);
-      article.appendChild(img);
-    }
-
-    timelineList.appendChild(article);
-  });
-};
-
-const renderGallery = () => {
-  galleryList.innerHTML = '';
-  content.gallery.forEach((item) => {
-    const card = document.createElement('div');
-    card.className = 'gallery-item';
-    const img = document.createElement('img');
-    img.src = item.src;
-    img.alt = item.alt;
-    img.loading = 'lazy';
-    img.addEventListener('error', handleImageError);
-    const caption = document.createElement('p');
-    caption.className = 'gallery-caption';
-    caption.textContent = item.caption;
-    card.appendChild(img);
-    card.appendChild(caption);
-    galleryList.appendChild(card);
-  });
 };
 
 const renderPhotoCarousels = () => {
@@ -329,9 +284,7 @@ const showApp = () => {
   appScreen.classList.remove('hidden');
   renderHero();
   renderIntro();
-  renderTimeline();
   renderPhotoCarousels();
-  renderGallery();
   renderCoupons();
   renderLetter();
   updateMusicButton();

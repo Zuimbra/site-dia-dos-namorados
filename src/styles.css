@@ -301,16 +301,12 @@ button.secondary {
   margin-top: 12px;
 }
 
-.timeline-list,
-.gallery-list,
 .coupon-list {
   display: grid;
   gap: 16px;
   margin-top: 16px;
 }
 
-.timeline-item,
-.gallery-item,
 .coupon-card {
   background: rgba(255, 255, 255, 0.9);
   border-radius: 28px;
@@ -318,51 +314,16 @@ button.secondary {
   padding: 20px;
 }
 
-.timeline-item h3,
 .coupon-card h3 {
   margin-top: 0;
   margin-bottom: 8px;
 }
 
-.timeline-item time {
-  display: block;
-  margin-bottom: 12px;
-  color: #8f6371;
-  font-size: 0.95rem;
-}
-
-.timeline-item p,
 .coupon-card p,
 .section-card p,
-.gallery-caption,
 .final-response {
   margin: 0;
   color: #4a3138;
-}
-
-.timeline-item img,
-.gallery-item img {
-  width: 100%;
-  display: block;
-  border-radius: 24px;
-  margin-top: 16px;
-  object-fit: cover;
-}
-
-.gallery-item {
-  padding: 0;
-  overflow: hidden;
-}
-
-.gallery-caption {
-  padding: 14px 18px;
-  font-size: 0.95rem;
-  background: rgba(255, 255, 255, 0.9);
-}
-
-.gallery-item img.image-fallback {
-  background: #f8e6e8;
-  min-height: 220px;
 }
 
 .coupon-card {
