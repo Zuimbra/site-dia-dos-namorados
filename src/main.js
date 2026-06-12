@@ -8,7 +8,6 @@ const passwordMessage = document.getElementById('password-message');
 const heroTitle = document.getElementById('hero-title');
 const heroText = document.getElementById('hero-text');
 const heroStart = document.getElementById('hero-start');
-const musicToggle = document.getElementById('music-toggle');
 const introTitle = document.getElementById('intro-title');
 const introText = document.getElementById('intro-text');
 const photoCarouselsTitle = document.getElementById('photo-carousels-title');
@@ -20,9 +19,20 @@ const finalButton = document.getElementById('final-button');
 const finalResponse = document.getElementById('final-response');
 const heartLayer = document.getElementById('heart-layer');
 
+// Audio player elements
+const audioPlayer = document.getElementById('audio-player');
+const audioToggle = document.getElementById('audio-toggle');
+const audioTitle = document.getElementById('audio-title');
+const audioArtist = document.getElementById('audio-artist');
+const audioProgress = document.getElementById('audio-progress');
+const audioCurrentTime = document.getElementById('audio-current-time');
+const audioDuration = document.getElementById('audio-duration');
+const audioStatus = document.getElementById('audio-status');
+
 let audio;
 let isPlaying = false;
 let couponState = [];
+let isSeeking = false;
 
 const normalize = (value) => value.trim().toLowerCase().replace(/\s+/g, '');
 
@@ -88,7 +98,8 @@ const renderHero = () => {
   heroTitle.textContent = content.hero.title;
   heroText.textContent = content.hero.text;
   heroStart.textContent = content.hero.startButton;
-  musicToggle.textContent = content.music.label;
+  if (audioTitle) audioTitle.textContent = content.music?.title || content.music?.label || 'Nossa música';
+  if (audioArtist) audioArtist.textContent = content.music?.artist || '';
 };
 
 const renderIntro = () => {
@@ -238,31 +249,80 @@ const renderLetter = () => {
   finalButton.textContent = content.final.buttonText;
 };
 
-const updateMusicButton = () => {
-  musicToggle.textContent = isPlaying ? 'Pausar música' : content.music.label;
+const formatTime = (seconds) => {
+  if (!Number.isFinite(seconds)) return '0:00';
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = Math.floor(seconds % 60).toString().padStart(2, '0');
+  return `${minutes}:${remainingSeconds}`;
+};
+
+const updateAudioPlayer = () => {
+  if (!audio) return;
+
+  // Button
+  if (audioToggle) {
+    audioToggle.textContent = isPlaying ? '❚❚' : '▶';
+    const aria = isPlaying ? (content.music.pauseLabel || 'Pausar música') : (content.music.playLabel || 'Tocar música');
+    audioToggle.setAttribute('aria-label', aria);
+  }
+
+  // Times and progress
+  const current = audio.currentTime;
+  const duration = audio.duration;
+  if (audioCurrentTime) audioCurrentTime.textContent = formatTime(current);
+  if (audioDuration) audioDuration.textContent = Number.isFinite(duration) ? formatTime(duration) : '0:00';
+
+  if (audioProgress && !isSeeking) {
+    const percent = Number.isFinite(duration) && duration > 0 ? (current / duration) * 100 : 0;
+    audioProgress.value = percent;
+  }
 };
 
 const initAudio = () => {
-  if (!content.music.enabled || !content.music.src) return;
+  if (!content.music || !content.music.enabled || !content.music.src) {
+    if (audioPlayer) audioPlayer.style.display = 'none';
+    return;
+  }
+
+  if (audioTitle) audioTitle.textContent = content.music.title || content.music.label || '';
+  if (audioArtist) audioArtist.textContent = content.music.artist || '';
+
   audio = new Audio(content.music.src);
+  audio.preload = 'metadata';
   audio.loop = true;
-  audio.preload = 'none';
+
+  audio.addEventListener('loadedmetadata', () => {
+    updateAudioPlayer();
+  });
+
+  audio.addEventListener('timeupdate', () => {
+    updateAudioPlayer();
+  });
+
   audio.addEventListener('play', () => {
     isPlaying = true;
-    updateMusicButton();
+    updateAudioPlayer();
   });
+
   audio.addEventListener('pause', () => {
     isPlaying = false;
-    updateMusicButton();
+    updateAudioPlayer();
   });
-  audio.addEventListener('error', () => {
+
+  audio.addEventListener('ended', () => {
     isPlaying = false;
-    musicToggle.disabled = true;
-    musicToggle.textContent = 'Áudio indisponível';
+    audio.currentTime = 0;
+    updateAudioPlayer();
+  });
+
+  audio.addEventListener('error', () => {
+    if (audioToggle) audioToggle.disabled = true;
+    if (audioStatus) audioStatus.textContent = content.music.unavailableLabel || 'Áudio indisponível';
+    if (audioPlayer) audioPlayer.classList.add('is-error');
   });
 };
 
-const toggleMusic = async () => {
+const toggleAudio = async () => {
   if (!audio) return;
   try {
     if (audio.paused) {
@@ -272,11 +332,30 @@ const toggleMusic = async () => {
       audio.pause();
       isPlaying = false;
     }
-    updateMusicButton();
-  } catch {
-    musicToggle.textContent = 'Não foi possível tocar';
-    musicToggle.disabled = true;
+    updateAudioPlayer();
+  } catch (e) {
+    if (audioStatus) audioStatus.textContent = content.music.unavailableLabel || 'Áudio indisponível';
+    if (audioToggle) audioToggle.disabled = true;
   }
+};
+
+const handleProgressInput = () => {
+  if (!audio || !audioProgress) return;
+  isSeeking = true;
+  const percent = Number(audioProgress.value);
+  const duration = audio.duration;
+  const newTime = Number.isFinite(duration) && duration > 0 ? (percent / 100) * duration : 0;
+  if (audioCurrentTime) audioCurrentTime.textContent = formatTime(newTime);
+};
+
+const handleProgressChange = () => {
+  if (!audio || !audioProgress) return;
+  const percent = Number(audioProgress.value);
+  const duration = audio.duration;
+  const newTime = Number.isFinite(duration) && duration > 0 ? (percent / 100) * duration : 0;
+  isSeeking = false;
+  audio.currentTime = newTime;
+  updateAudioPlayer();
 };
 
 const showApp = () => {
@@ -317,7 +396,11 @@ const initEvents = () => {
   heroStart.addEventListener('click', () => {
     document.getElementById('intro').scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
-  musicToggle.addEventListener('click', toggleMusic);
+  if (audioToggle) audioToggle.addEventListener('click', toggleAudio);
+  if (audioProgress) {
+    audioProgress.addEventListener('input', handleProgressInput);
+    audioProgress.addEventListener('change', handleProgressChange);
+  }
   finalButton.addEventListener('click', handleFinalClick);
 };
 

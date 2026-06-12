@@ -79,9 +79,25 @@ Se as imagens não existirem, a interface seguirá funcionando com placeholders 
 
 ## Como trocar música
 
-Substitua o arquivo em `public/audio/musica.mp3`.
+O app usa um player de áudio customizado (sem `autoplay`). O arquivo padrão fica em `public/audio/musica.mp3`.
 
-Você também pode alterar `content.music.src` em `src/content.js`.
+- Para trocar a música, substitua o arquivo em `public/audio/musica.mp3` ou altere o caminho em `src/content.js` (`content.music.src`).
+- O player só inicia após um toque do usuário (requisito para compatibilidade com iPhone/Safari).
+- As labels e metadados estão configuráveis em `content.music` (título, artista, rótulos de play/pause e mensagem de indisponibilidade).
+
+Exemplo mínimo em `src/content.js`:
+
+```js
+music: {
+   enabled: true,
+   src: '/audio/musica.mp3',
+   title: 'Nossa música',
+   artist: 'Um pedacinho nosso',
+   playLabel: 'Tocar',
+   pauseLabel: 'Pausar',
+   unavailableLabel: 'Áudio indisponível'
+}
+```
 
 ## Como trocar ícones
 

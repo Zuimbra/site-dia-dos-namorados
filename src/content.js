@@ -355,6 +355,11 @@ Te amo!`,
   music: {
     enabled: true,
     src: "/audio/musica.mp3",
+    title: "Nossa música",
+    artist: "Um pedacinho nosso",
+    playLabel: "Tocar",
+    pauseLabel: "Pausar",
+    unavailableLabel: "Áudio indisponível",
     label: "Tocar música"
   }
 };
