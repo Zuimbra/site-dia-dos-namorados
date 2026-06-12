@@ -12,6 +12,9 @@ const musicToggle = document.getElementById('music-toggle');
 const introTitle = document.getElementById('intro-title');
 const introText = document.getElementById('intro-text');
 const timelineList = document.getElementById('timeline-list');
+const photoCarouselsTitle = document.getElementById('photo-carousels-title');
+const photoCarouselsText = document.getElementById('photo-carousels-text');
+const photoCarouselsList = document.getElementById('photo-carousels-list');
 const galleryList = document.getElementById('gallery-list');
 const couponList = document.getElementById('coupon-list');
 const finalLetter = document.getElementById('final-letter');
@@ -138,6 +141,117 @@ const renderGallery = () => {
   });
 };
 
+const renderPhotoCarousels = () => {
+  photoCarouselsList.innerHTML = '';
+  if (!Array.isArray(content.photoCarousels) || content.photoCarousels.length === 0) {
+    return;
+  }
+
+  photoCarouselsTitle.textContent = content.photoCarouselsIntro?.title || 'Nossas fotos';
+  photoCarouselsText.textContent = content.photoCarouselsIntro?.text || 'Separei algumas memórias em pedacinhos, do jeito que elas ficaram guardadas.';
+
+  content.photoCarousels.forEach((album) => {
+    const albumCard = document.createElement('article');
+    albumCard.className = 'album-card';
+
+    const albumHeader = document.createElement('div');
+    albumHeader.className = 'album-header';
+    const albumTitle = document.createElement('h3');
+    albumTitle.textContent = album.title;
+    const albumSubtitle = document.createElement('p');
+    albumSubtitle.textContent = album.subtitle;
+    albumHeader.append(albumTitle, albumSubtitle);
+
+    const carouselShell = document.createElement('div');
+    carouselShell.className = 'carousel-shell';
+
+    const track = document.createElement('div');
+    track.className = 'carousel-track';
+    track.setAttribute('aria-label', `${album.title} carrossel de fotos`);
+    track.setAttribute('role', 'list');
+
+    album.photos.forEach((photo) => {
+      const slide = document.createElement('div');
+      slide.className = 'carousel-slide';
+      slide.setAttribute('role', 'listitem');
+
+      const img = document.createElement('img');
+      img.className = 'carousel-image';
+      img.src = photo.src;
+      img.alt = photo.alt;
+      img.loading = 'lazy';
+      img.addEventListener('error', handleImageError);
+
+      const caption = document.createElement('p');
+      caption.className = 'carousel-caption';
+      caption.textContent = photo.caption;
+
+      slide.appendChild(img);
+      slide.appendChild(caption);
+      track.appendChild(slide);
+    });
+
+    const controls = document.createElement('div');
+    controls.className = 'carousel-controls';
+
+    const counter = document.createElement('span');
+    counter.className = 'carousel-counter';
+    counter.textContent = `1 / ${album.photos.length}`;
+
+    const prevButton = document.createElement('button');
+    prevButton.className = 'carousel-button secondary';
+    prevButton.type = 'button';
+    prevButton.textContent = 'Anterior';
+    prevButton.disabled = true;
+
+    const nextButton = document.createElement('button');
+    nextButton.className = 'carousel-button secondary';
+    nextButton.type = 'button';
+    nextButton.textContent = 'Próxima';
+    nextButton.disabled = album.photos.length <= 1;
+
+    controls.append(prevButton, counter, nextButton);
+    carouselShell.appendChild(track);
+    albumCard.append(albumHeader, carouselShell, controls);
+    photoCarouselsList.appendChild(albumCard);
+
+    const slides = Array.from(track.children);
+    let currentIndex = 0;
+
+    const updateCarousel = () => {
+      const width = track.clientWidth;
+      if (!width) return;
+      const index = Math.min(slides.length - 1, Math.max(0, Math.round(track.scrollLeft / width)));
+      currentIndex = index;
+      prevButton.disabled = index === 0;
+      nextButton.disabled = index === slides.length - 1;
+      counter.textContent = `${index + 1} / ${slides.length}`;
+    };
+
+    const scrollToIndex = (index) => {
+      const slide = slides[index];
+      if (!slide) return;
+      slide.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+    };
+
+    prevButton.addEventListener('click', () => {
+      if (currentIndex === 0) return;
+      scrollToIndex(currentIndex - 1);
+    });
+
+    nextButton.addEventListener('click', () => {
+      if (currentIndex >= slides.length - 1) return;
+      scrollToIndex(currentIndex + 1);
+    });
+
+    track.addEventListener('scroll', () => {
+      window.requestAnimationFrame(updateCarousel);
+    });
+
+    updateCarousel();
+  });
+};
+
 const renderCoupons = () => {
   couponList.innerHTML = '';
   content.coupons.forEach((coupon, index) => {
@@ -216,6 +330,7 @@ const showApp = () => {
   renderHero();
   renderIntro();
   renderTimeline();
+  renderPhotoCarousels();
   renderGallery();
   renderCoupons();
   renderLetter();

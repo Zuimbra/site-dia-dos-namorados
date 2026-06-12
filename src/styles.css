@@ -194,6 +194,109 @@ button.secondary {
   margin-top: 24px;
 }
 
+.section-subtitle {
+  margin: 0;
+  color: #6f4a57;
+  font-size: 0.98rem;
+  line-height: 1.5;
+}
+
+.photo-carousels-section {
+  margin-top: 24px;
+}
+
+.album-card {
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 34px;
+  border: 1px solid rgba(125, 73, 86, 0.12);
+  box-shadow: 0 24px 60px rgba(93, 52, 66, 0.08);
+  padding: 22px;
+}
+
+.album-header {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.carousel-shell {
+  position: relative;
+  overflow: hidden;
+  border-radius: 28px;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  padding-bottom: 12px;
+}
+
+.carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-track {
+  scrollbar-width: none;
+}
+
+.carousel-slide {
+  flex: 0 0 100%;
+  scroll-snap-align: center;
+  display: grid;
+  gap: 12px;
+}
+
+.carousel-image {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 28px;
+  min-height: 220px;
+  background: #f7e6e8;
+}
+
+.carousel-caption {
+  margin: 0;
+  color: #5f3d45;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.carousel-controls {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.carousel-button {
+  flex: 1 1 120px;
+  min-height: 48px;
+  border-radius: 18px;
+  border: none;
+  background: rgba(255, 255, 255, 0.98);
+  color: #7a4b57;
+  box-shadow: inset 0 0 0 1px rgba(125, 73, 86, 0.16);
+}
+
+.carousel-button:disabled {
+  opacity: 0.65;
+  cursor: default;
+}
+
+.carousel-counter {
+  flex: 0 0 auto;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #7a4b57;
+}
+
 .section-card {
   margin-top: 12px;
 }

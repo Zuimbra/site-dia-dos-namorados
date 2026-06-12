@@ -57,6 +57,26 @@ Substitua os arquivos em `public/images`.
 
 Se as imagens não existirem, a interface seguirá funcionando com placeholders visuais.
 
+## Como adicionar álbuns de fotos
+
+1. Coloque cada álbum em `public/images/albuns/NOME-DO-ALBUM/`.
+2. Evite acentos, cedilha e espaços em nomes de pastas e arquivos.
+3. Depois edite `src/content.js` em `photoCarousels`.
+4. Cada álbum vira um carrossel independente no app.
+
+### Exemplo de pasta
+
+- `public/images/albuns/bar-1/`
+- `public/images/albuns/bar-2/`
+- `public/images/albuns/dia-12-06-2025/`
+- `public/images/albuns/halloween/`
+- `public/images/albuns/ligacoes/`
+- `public/images/albuns/outras/`
+- `public/images/albuns/pedido/`
+- `public/images/albuns/pre-aniversario-annabel/`
+
+> Aviso: como o repositório está público, fotos pessoais ficam acessíveis no GitHub e no deploy. Para privacidade, recomenda-se tornar o repositório privado ou usar imagens que possam ser publicadas.
+
 ## Como trocar música
 
 Substitua o arquivo em `public/audio/musica.mp3`.
