@@ -366,7 +366,7 @@ const showApp = () => {
   renderPhotoCarousels();
   renderCoupons();
   renderLetter();
-  updateMusicButton();
+  updateAudioPlayer();
   window.scrollTo({ top: 0, behavior: 'instant' });
 };
 
