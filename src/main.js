@@ -164,19 +164,7 @@ const renderPhotoCarousels = () => {
     counter.className = 'carousel-counter';
     counter.textContent = `1 / ${album.photos.length}`;
 
-    const prevButton = document.createElement('button');
-    prevButton.className = 'carousel-button secondary';
-    prevButton.type = 'button';
-    prevButton.textContent = 'Anterior';
-    prevButton.disabled = true;
-
-    const nextButton = document.createElement('button');
-    nextButton.className = 'carousel-button secondary';
-    nextButton.type = 'button';
-    nextButton.textContent = 'Próxima';
-    nextButton.disabled = album.photos.length <= 1;
-
-    controls.append(prevButton, counter, nextButton);
+    controls.append(counter);
     carouselShell.appendChild(track);
     albumCard.append(albumHeader, carouselShell, controls);
     photoCarouselsList.appendChild(albumCard);
@@ -189,26 +177,8 @@ const renderPhotoCarousels = () => {
       if (!width) return;
       const index = Math.min(slides.length - 1, Math.max(0, Math.round(track.scrollLeft / width)));
       currentIndex = index;
-      prevButton.disabled = index === 0;
-      nextButton.disabled = index === slides.length - 1;
       counter.textContent = `${index + 1} / ${slides.length}`;
     };
-
-    const scrollToIndex = (index) => {
-      const slide = slides[index];
-      if (!slide) return;
-      slide.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
-    };
-
-    prevButton.addEventListener('click', () => {
-      if (currentIndex === 0) return;
-      scrollToIndex(currentIndex - 1);
-    });
-
-    nextButton.addEventListener('click', () => {
-      if (currentIndex >= slides.length - 1) return;
-      scrollToIndex(currentIndex + 1);
-    });
 
     track.addEventListener('scroll', () => {
       window.requestAnimationFrame(updateCarousel);
